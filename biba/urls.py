@@ -14,9 +14,36 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
+from .views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', HomeView.as_view(), name='home'),
+
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', UserLoginView.as_view(), name='login'),
+    path('logout/', UserLogoutView.as_view(), name='logout'),
+    path('profile/', ProfileView.as_view(), name='profile'),
+
+    path('forum/', TopicListView.as_view(), name='forum'),
+    path('forum/<int:pk>/', TopicDetailView.as_view(), name='topic_detail'),
+    path('forum/<int:pk>/post/', PostCreateView.as_view(), name='post_create'),
+
+    path('grades/', GradeListView.as_view(), name='grades'),
+    path('grades/add/', GradeCreateView.as_view(), name='grade_add'),
+
+    path('events/', EventListView.as_view(), name='events'),
+    path('events/add/', EventCreateView.as_view(), name='event_add'),
+    path('events/<int:pk>/edit/', EventUpdateView.as_view(), name='event_edit'),
+    path('events/<int:pk>/delete/', EventDeleteView.as_view(), name='event_delete'),
+
+    path('poll/<int:pk>/', PollView.as_view(), name='poll'),
+
+    path('vote/<int:pk>/', VoteView.as_view(), name='vote'),
+
+    path('announcements/', AnnouncementListView.as_view(), name='announcements'),
+    path('materials/', MaterialListView.as_view(), name='materials'),
+    path('portfolio/', PortfolioListView.as_view(), name='portfolio'),
+
+    path('gallery/', GalleryListView.as_view(), name='gallery'),
 ]
