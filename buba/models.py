@@ -118,3 +118,16 @@ class GalleryItem(models.Model):
     file = models.FileField(upload_to="gallery/")
     approved = models.BooleanField(default=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class GalleryImage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='gallery_images')
+    photo = models.ImageField(upload_to='gallery/')
+    description = models.CharField(max_length=200, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    is_public = models.BooleanField(default=True)  # можна додати, якщо захочеш колись приватні фото
+
+    class Meta:
+        ordering = ['-uploaded_at']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.description or 'Без назви'}"

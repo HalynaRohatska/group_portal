@@ -2,10 +2,30 @@ from django.shortcuts import render
 from django.views import View
 
 
+@login_required
+def add_gallery_photo(request):
+    if request.method == 'POST':
+        photo = request.FILES.get('photo')
+        description = request.POST.get('description', '')
+
+        if photo:
+            image = GalleryImage(
+                user=request.user,
+                photo=photo,
+                description=description
+            )
+            image.save()
+            messages.success(request, 'Фото успішно додано в галерею!')
+        else:
+            messages.error(request, 'Оберіть фото для завантаження.')
+
+    return redirect('gallery')
+
+
 # Головна сторінка
 class HomeView(View):
     def get(self, request):
-        return render(request, "home.html")
+        return render(request, "index.html")
 class RegisterView(View):
     def get(self, request):
         return render(request, "users/register.html")
@@ -56,7 +76,7 @@ class GradeCreateView(View):
 
 class EventListView(View):
     def get(self, request):
-        return render(request, "events/event_list.html")
+        return render(request, "events.html")
 
 
 # Додавання події
@@ -83,7 +103,7 @@ class VoteView(View):
         return render(request, "voting/vote.html", {"vote_id": pk})
 class AnnouncementListView(View):
     def get(self, request):
-        return render(request, "announcements/list.html")
+        return render(request, "announcements.html")
 
 
 class MaterialListView(View):
@@ -92,9 +112,13 @@ class MaterialListView(View):
 
 class PortfolioListView(View):
     def get(self, request):
-        return render(request, "portfolio/list.html")
+        return render(request, "portfolio.html")
 
 
 class GalleryListView(View):
     def get(self, request):
-        return render(request, "gallery/list.html")
+        return render(request, "gallery.html")
+
+def gallery_view(request):
+    images = GalleryImage.objects.filter(is_public=True).select_related('user')
+    return render(request, 'gallery.html', {'all_gallery_images': images})

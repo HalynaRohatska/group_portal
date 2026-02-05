@@ -19,7 +19,8 @@ from .views import *
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
-
+    path('gallery/', views.gallery_view, name='gallery'),
+    path('gallery/add/', views.add_gallery_photo, name='add_gallery_photo'),
     path('register/', RegisterView.as_view(), name='register'),
     path('login/', UserLoginView.as_view(), name='login'),
     path('logout/', UserLogoutView.as_view(), name='logout'),
