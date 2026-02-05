@@ -21,6 +21,27 @@ def add_gallery_photo(request):
 
     return redirect('gallery')
 
+@login_required
+def portfolio_view(request):
+    projects = Project.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'portfolio.html', {'projects': projects})
+
+
+@login_required
+def add_project(request):
+    if request.method == 'POST':
+        project = Project(
+            user=request.user,
+            title=request.POST.get('title'),
+            description=request.POST.get('description'),
+            technologies=request.POST.get('technologies', ''),
+            project_url=request.POST.get('project_url', ''),
+            github_url=request.POST.get('github_url', ''),
+            image=request.FILES.get('image')
+        )
+        project.save()
+
+    return redirect('portfolio')
 
 # Головна сторінка
 class HomeView(View):

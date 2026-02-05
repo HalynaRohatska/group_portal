@@ -18,6 +18,7 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+    path('portfolio/add/', views.add_project, name='add_project')
     path('', HomeView.as_view(), name='home'),
     path('gallery/', views.gallery_view, name='gallery'),
     path('gallery/add/', views.add_gallery_photo, name='add_gallery_photo'),
